@@ -4,6 +4,7 @@
 - [#2561](https://github.com/poanetwork/blockscout/pull/2561) - Add token's type to the response of tokenlist method
 - [#2499](https://github.com/poanetwork/blockscout/pull/2499) - import emission reward ranges
 - [#2497](https://github.com/poanetwork/blockscout/pull/2497) - Add generic Ordered Cache behaviour and implementation
+- [#2470](https://github.com/poanetwork/blockscout/pull/2470) - Allow Realtime Fetcher to wait for small skips
 
 ### Fixes
 - [#2572](https://github.com/poanetwork/blockscout/pull/2572) - Ease non-critical css
