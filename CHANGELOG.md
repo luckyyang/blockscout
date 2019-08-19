@@ -58,6 +58,7 @@
 - [#2509](https://github.com/poanetwork/blockscout/pull/2509) - value-ticker gaps fix
 - [#2508](https://github.com/poanetwork/blockscout/pull/2508) - logs view columns fix
 - [#2506](https://github.com/poanetwork/blockscout/pull/2506) - fix two active tab in the top menu
+- [#2518](https://github.com/poanetwork/blockscout/pull/2518) - create suggested indexes
 - [#2503](https://github.com/poanetwork/blockscout/pull/2503) - Mitigate autocompletion library influence to page loading performance
 - [#2502](https://github.com/poanetwork/blockscout/pull/2502) - increase reward task timeout
 - [#2463](https://github.com/poanetwork/blockscout/pull/2463) - dark theme fixes
