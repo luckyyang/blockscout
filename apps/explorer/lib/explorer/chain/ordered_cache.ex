@@ -308,7 +308,12 @@ defmodule Explorer.Chain.OrderedCache do
       provided to this function will override the ones set by using the macro
       """
       def child_spec(params) do
-        params = Keyword.merge(unquote(concache_params), params)
+        opts = Application.get_env(:explorer, __MODULE__, [])
+
+        params =
+          unquote(concache_params)
+          |> Keyword.merge(params)
+          |> Keyword.merge(opts)
 
         Supervisor.child_spec({ConCache, params}, id: child_id())
       end
