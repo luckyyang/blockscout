@@ -8,20 +8,20 @@ defmodule Explorer.Chain.Cache.BlockNumber do
   @tab :block_number_cache
   @key "min_max"
 
-  @spec setup() :: :ok
-  def setup do
-    if :ets.whereis(@tab) == :undefined do
-      :ets.new(@tab, [
-        :set,
-        :named_table,
-        :public,
-        write_concurrency: true
-      ])
-    end
+  def child_spec(_) do
+    ttl = Application.get_env(:explorer, __MODULE__)[:ttl]
 
-    update_cache()
-
-    :ok
+    Supervisor.child_spec(
+      {
+        ConCache,
+        [
+          name: @tab,
+          ttl_check_interval: if(ttl, do: :timer.seconds(1), else: false),
+          global_ttl: ttl
+        ]
+      },
+      id: {ConCache, @tab}
+    )
   end
 
   def max_number do
@@ -39,7 +39,7 @@ defmodule Explorer.Chain.Cache.BlockNumber do
   defp value(type) do
     {min, max} =
       if Application.get_env(:explorer, __MODULE__)[:enabled] do
-        cached_values()
+        get_cache()
       else
         min_and_max_from_db()
       end
@@ -51,35 +51,36 @@ defmodule Explorer.Chain.Cache.BlockNumber do
     end
   end
 
-  @spec update(non_neg_integer()) :: boolean()
-  def update(number) do
-    {old_min, old_max} = cached_values()
+  defp get_cache do
+    case ConCache.get(@tab, @key) do
+      nil ->
+        val = min_and_max_from_db()
+        ConCache.put(@tab, @key, val)
+        val
 
-    cond do
-      number > old_max ->
-        tuple = {old_min, number}
-        :ets.insert(@tab, {@key, tuple})
-
-      number < old_min ->
-        tuple = {number, old_max}
-        :ets.insert(@tab, {@key, tuple})
-
-      true ->
-        false
+      val ->
+        val
     end
   end
 
-  defp update_cache do
-    {min, max} = min_and_max_from_db()
-    tuple = {min, max}
+  @spec update(non_neg_integer()) :: boolean()
+  def update(number) do
+    if Application.get_env(:explorer, __MODULE__)[:enabled] do
+      {old_min, old_max} = ConCache.get(@tab, @key)
 
-    :ets.insert(@tab, {@key, tuple})
-  end
+      cond do
+        number > old_max ->
+          tuple = {old_min, number}
+          ConCache.put(@tab, @key, tuple)
 
-  defp cached_values do
-    [{_, cached_values}] = :ets.lookup(@tab, @key)
+        number < old_min ->
+          tuple = {number, old_max}
+          ConCache.put(@tab, @key, tuple)
 
-    cached_values
+        true ->
+          false
+      end
+    end
   end
 
   defp min_and_max_from_db do

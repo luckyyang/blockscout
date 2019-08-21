@@ -55,11 +55,7 @@ defmodule Explorer.Application do
 
     opts = [strategy: :one_for_one, name: Explorer.Supervisor]
 
-    res = Supervisor.start_link(children, opts)
-
-    BlockNumber.setup()
-
-    res
+    Supervisor.start_link(children, opts)
   end
 
   defp configurable_children do
@@ -71,7 +67,8 @@ defmodule Explorer.Application do
       configure(Explorer.Counters.AddressesWithBalanceCounter),
       configure(Explorer.Counters.AverageBlockTime),
       configure(Explorer.Validator.MetadataProcessor),
-      configure(Explorer.Staking.EpochCounter)
+      configure(Explorer.Staking.EpochCounter),
+      configure(BlockNumber)
     ]
     |> List.flatten()
   end

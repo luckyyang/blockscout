@@ -29,7 +29,9 @@ config :explorer, Explorer.Counters.AverageBlockTime,
 
 config :explorer, Explorer.ChainSpec.GenesisData, enabled: true, chain_spec_path: System.get_env("CHAIN_SPEC_PATH")
 
-config :explorer, Explorer.Chain.Cache.BlockNumber, enabled: true
+config :explorer, Explorer.Chain.Cache.BlockNumber,
+  enabled: true,
+  ttl: if(System.get_env("DISABLE_INDEXER") == "true", do: :timer.seconds(5), else: nil)
 
 config :explorer, Explorer.ExchangeRates.Source.CoinMarketCap,
   pages: String.to_integer(System.get_env("COINMARKETCAP_PAGES") || "10")
