@@ -31,7 +31,8 @@ config :explorer, Explorer.ChainSpec.GenesisData, enabled: false, chain_spec_pat
 
 config :explorer, Explorer.Chain.Cache.BlockNumber,
   enabled: true,
-  ttl: if(System.get_env("DISABLE_INDEXER") == "true", do: :timer.seconds(5), else: nil)
+  ttl_check_interval: if(System.get_env("DISABLE_INDEXER") == "true", do: :timer.seconds(1), else: false),
+  global_ttl: if(System.get_env("DISABLE_INDEXER") == "true", do: :timer.seconds(5))
 
 config :explorer, Explorer.ExchangeRates.Source.CoinMarketCap,
   pages: String.to_integer(System.get_env("COINMARKETCAP_PAGES") || "10")

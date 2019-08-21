@@ -47,7 +47,6 @@ defmodule Explorer.Chain.Cache.BlockNumberTest do
     end
   end
 
-  @tag :wip
   describe "with ttl" do
     setup :cache_with_ttl
 
@@ -92,7 +91,7 @@ defmodule Explorer.Chain.Cache.BlockNumberTest do
   end
 
   defp cache_with_ttl(_) do
-    Application.put_env(:explorer, BlockNumber, enabled: true, ttl: :timer.seconds(1))
+    Application.put_env(:explorer, BlockNumber, enabled: true, ttl_check_interval: 200, global_ttl: 200)
     Supervisor.start_child(Explorer.Supervisor, BlockNumber.child_spec([]))
 
     on_exit(fn ->

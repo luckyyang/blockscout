@@ -9,14 +9,15 @@ defmodule Explorer.Chain.Cache.BlockNumber do
   @key "min_max"
 
   def child_spec(_) do
-    ttl = Application.get_env(:explorer, __MODULE__)[:ttl]
+    interval = Application.get_env(:explorer, __MODULE__)[:ttl_check_interval] || false
+    ttl = Application.get_env(:explorer, __MODULE__)[:global_ttl]
 
     Supervisor.child_spec(
       {
         ConCache,
         [
           name: @tab,
-          ttl_check_interval: if(ttl, do: :timer.seconds(1), else: false),
+          ttl_check_interval: interval,
           global_ttl: ttl
         ]
       },
