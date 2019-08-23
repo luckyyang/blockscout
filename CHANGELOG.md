@@ -16,6 +16,7 @@
 - [#2613](https://github.com/poanetwork/blockscout/pull/2613) - fix getminedblocks rpc endpoint
 - [#2610](https://github.com/poanetwork/blockscout/pull/2610) - use CoinGecko instead of CoinMarketcap for exchange rates
 - [#2592](https://github.com/poanetwork/blockscout/pull/2592) - process new metadata format for whisper
+- [#2612](https://github.com/poanetwork/blockscout/pull/2612) - Add cache updating independently from Indexer
 - [#2572](https://github.com/poanetwork/blockscout/pull/2572) - Ease non-critical css
 - [#2570](https://github.com/poanetwork/blockscout/pull/2570) - Network icons preload
 - [#2569](https://github.com/poanetwork/blockscout/pull/2569) - do not fetch emission rewards for transactions csv exporter
